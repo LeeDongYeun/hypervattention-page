@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="HyperVAttention: Efficient Sparse Attention with Spatio-Temporal Clustering for Video Diffusion.">
+  <meta name="keywords" content="HyperVAttention, sparse attention, video diffusion, spatio-temporal clustering">
+  <meta name="author" content="Dongyeun Lee, Amir Zandieh, Vahab Mirrokni, Junmo Kim, Insu Han">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>HyperVAttention: Efficient Sparse Attention with Spatio-Temporal Clustering for Video Diffusion</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script defer src="./static/js/index.js"></script>
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-burger" role="button" aria-label="menu" aria-expanded="false" data-target="main-navbar">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="main-navbar" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="#abstract">Abstract</a>
+        <a class="navbar-item" href="#hypervattention">HyperVAttention</a>
+        <a class="navbar-item" href="#video-results">Video Results</a>
+        <a class="navbar-item" href="#results">Results</a>
+        <a class="navbar-item" href="#bibtex">BibTeX</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero publication-header">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                HyperVAttention: Efficient Sparse Attention 
+                with Spatio-Temporal Clustering for Video Diffusion
+              </h1>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://leedongyeun.github.io/" target="_blank" rel="noopener noreferrer">Dongyeun Lee</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?hl=ko&amp;user=S9Ss8M8AAAAJ&amp;view_op=list_works&amp;sortby=pubdate"
+                     target="_blank" rel="noopener noreferrer">Amir Zandieh</a><sup>2</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://people.csail.mit.edu/mirrokni/Welcome.html"
+                     target="_blank" rel="noopener noreferrer">Vahab Mirrokni</a><sup>2</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://siit.kaist.ac.kr/members/faculty/"
+                     target="_blank" rel="noopener noreferrer">Junmo Kim</a><sup>1,&dagger;</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://insuhan.github.io/" target="_blank" rel="noopener noreferrer">Insu Han</a><sup>1,&dagger;</sup>
+                </span>
+              </div>
+              <div class="is-size-5 publication-authors">
+                <span class="affiliation-block"><sup>1</sup>KAIST&nbsp;&nbsp;</span>
+                <span class="affiliation-block"><sup>2</sup>Google Research</span>
+              </div>
+              <div class="is-size-6 publication-authors">
+                <span class="affiliation-block"><sup>&dagger;</sup>Corresponding authors</span>
+              </div>
+
+              <div class="publication-venue">NeurIPS 2026</div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="https://arxiv.org/pdf/2607.03012"
+                       class="external-link button is-normal is-rounded is-dark"
+                       target="_blank" rel="noopener noreferrer">
+                      <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="https://arxiv.org/abs/2607.03012"
+                       class="external-link button is-normal is-rounded is-dark"
+                       target="_blank" rel="noopener noreferrer">
+                      <span class="icon"><i class="ai ai-arxiv"></i></span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="https://github.com/LeeDongYeun/HyperVAttention"
+                       class="external-link button is-normal is-rounded is-dark"
+                       target="_blank" rel="noopener noreferrer">
+                      <span class="icon"><i class="fab fa-github"></i></span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero teaser">
+      <div class="container is-max-desktop">
+        <div class="hero-body">
+          <figure>
+            <img class="teaser-image"
+                 src="./static/images/teaser.png"
+                 width="2386"
+                 height="961"
+                 alt="Comparison of HunyuanVideo full attention and HyperVAttention on a generated mammoth video. HyperVAttention reduces latency from 27.00 seconds to 12.41 seconds while preserving visual quality.">
+            <figcaption class="subtitle has-text-left teaser-caption">
+              <strong>HyperVAttention</strong> is a training-free sparse attention framework for video diffusion that achieves
+              <strong>2.13&times; speedup</strong> on HunyuanVideo while preserving the visual fidelity of full attention.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="abstract" class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Video Diffusion Transformers (VDiTs) have demonstrated significant capabilities in high-fidelity video generation.
+                However, their ability to produce long-duration videos is fundamentally constrained by the quadratic complexity of
+                the self-attention mechanism. Recent clustering-based sparse attention methods improve the quality-speed trade-off by
+                grouping semantically similar tokens, but their practical efficiency remains limited by two bottlenecks: substantial
+                clustering overhead and low CTA utilization caused by irregular cluster-induced blocks. We propose HyperVAttention
+                (HVA), a training-free sparse attention framework that addresses both bottlenecks jointly. To reduce clustering
+                overhead, we introduce 3D local-window clustering, which exploits the spatio-temporal locality of video tokens to
+                restrict centroid search to fixed local neighborhoods, and implement it with a custom Triton kernel for efficient
+                execution. We further propose a hybrid clustering strategy that performs full clustering only at anchor steps and
+                updates only subset tokens at intermediate steps, leveraging the temporal stability of cluster assignments across
+                denoising steps. To improve CTA utilization, we present hardware-aware cluster merging that minimizes CTA-aligned
+                execution cost through parallel agglomerative merging, improving block density and approximation fidelity by utilizing
+                idle tile capacity. Together, these components reduce clustering overhead, avoid redundant updates, and better align
+                sparse attention with the fixed tile structure of modern GPU kernels. Experiments on Text-to-Video generation show that
+                HVA establishes a new Pareto frontier for training-free sparse attention in video diffusion, reducing end-to-end latency
+                by up to 2.13&times; while improving fidelity over existing training-free sparse attention baselines.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="hypervattention" class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">HyperVAttention</h2>
+            <figure class="method-figure">
+              <img src="./static/images/figure2.png"
+                   width="3166"
+                   height="1323"
+                   alt="Comparison of clustering-based sparse attention before and after hardware-aware cluster merging. Cluster merging fills unused CTA tile capacity and reduces thread underutilization.">
+              <figcaption class="figure-caption has-text-left">
+                Figure:  Illustration of how existing clustering-based sparse attention methods lead to thread underutilization. (a) These
+                methods form cluster-induced blocks, whose irregular sizes often misalign with fixed CTA tiles and leave padded regions
+                idle. (b) Merging similar clusters better matches cluster-induced blocks to CTA tiles, reducing tiled execution cost.
+                Darker regions show additional tokens placed in unused tile capacity, improving approximation fidelity without
+                increasing CTA tiles.
+              </figcaption>
+            </figure>
+
+            <div class="method-components">
+              <article class="method-component">
+                <h3 class="title is-4 has-text-left">3D Local-Window Clustering</h3>
+                <div class="content has-text-justified">
+                  <p>
+                    Existing clustering-based sparse attention methods often rely on generic global procedures such as <i>k</i>-means,
+                    which compare every token against every centroid without exploiting the spatio-temporal locality of video tokens.
+                    As a result, clustering itself becomes a major computational bottleneck, even when highly optimized kernels are
+                    used. Our 3D local-window clustering instead restricts centroid search to fixed local neighborhoods by leveraging
+                    the intrinsic spatio-temporal structure of video tokens. Compared with generic global clustering, this local search
+                    converges faster and has lower complexity. We further implement the procedure with a custom Triton kernel to reduce
+                    clustering overhead and enable efficient execution.
+                  </p>
+                </div>
+              </article>
+
+              <article class="method-component">
+                <h3 class="title is-4 has-text-left">Hybrid Clustering across Denoising Steps</h3>
+                <div class="content has-text-justified">
+                  <p>
+                    Existing approaches also overlook the temporal stability of token assignments across adjacent denoising steps.
+                    This leads to redundant recomputation because they repeatedly update all token assignments even though most remain
+                    unchanged over time. Our hybrid clustering strategy exploits this stability by performing full clustering only at
+                    designated anchor steps. At intermediate steps, it updates only a subset of tokens rather than clustering every
+                    token again. Combining infrequent full clustering with partial intermediate updates avoids redundant work and
+                    further reduces the clustering overhead accumulated throughout the denoising process.
+                  </p>
+                </div>
+              </article>
+
+              <article class="method-component">
+                <h3 class="title is-4 has-text-left">Hardware-Aware Cluster Merging</h3>
+                <div class="content has-text-justified">
+                  <p>
+                    Clustering-based sparse attention uses token clusters as logical attention blocks, but these irregular blocks are
+                    executed after being padded to the fixed CTA tile sizes of modern attention kernels. When cluster sizes do not align
+                    with the CTA tile shape, threads assigned to padded regions remain underutilized, preventing theoretical sparsity
+                    from fully translating into actual speedup. Hardware-aware cluster merging addresses this mismatch by formulating
+                    tiled execution cost as a hardware cost minimization problem and approximately solving it with efficient parallel
+                    agglomerative merging. Merging clusters to reduce this cost improves CTA utilization and latency. It also places
+                    additional tokens in otherwise unused tile capacity, enabling a more accurate attention approximation without
+                    increasing the number of CTA tiles.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="video-results" class="section video-results-section">
+      <div class="container is-max-widescreen">
+        <h2 class="title is-3 has-text-centered">Video Results</h2>
+
+        <div class="video-group">
+          <h3 class="title is-4 has-text-centered">Wan 2.2 Image-to-Video</h3>
+          <div class="video-grid">
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-i2v-01-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 image-to-video result 1">
+                <source src="./static/videos/wan-i2v-01.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-i2v-02-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 image-to-video result 2">
+                <source src="./static/videos/wan-i2v-02.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-i2v-03-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 image-to-video result 3">
+                <source src="./static/videos/wan-i2v-03.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-i2v-04-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 image-to-video result 4">
+                <source src="./static/videos/wan-i2v-04.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-group">
+          <h3 class="title is-4 has-text-centered">Wan 2.2 Text-to-Video</h3>
+          <div class="video-grid">
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-t2v-01-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 text-to-video result 1">
+                <source src="./static/videos/wan-t2v-01.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-t2v-02-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 text-to-video result 2">
+                <source src="./static/videos/wan-t2v-02.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-t2v-03-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 text-to-video result 3">
+                <source src="./static/videos/wan-t2v-03.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video-card">
+              <video class="result-video" muted loop playsinline controls preload="metadata"
+                     poster="./static/images/wan-t2v-04-poster.jpg"
+                     aria-label="HyperVAttention Wan 2.2 text-to-video result 4">
+                <source src="./static/videos/wan-t2v-04.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="section results-section">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Results</h2>
+
+        <article class="result-block">
+          <h3 class="title is-4">Quality–Efficiency Comparison</h3>
+          <figure class="result-figure">
+            <img src="./static/images/table1.png"
+                 width="1770"
+                 height="1450"
+                 alt="Table comparing the quality and efficiency of Full Attention, SpargeAttn, SVG, SVG2, HVA, and HVA-Flash on Wan 2.2 and HunyuanVideo.">
+          </figure>
+          <div class="content has-text-justified result-description">
+            <p>
+              Across Wan 2.2 image-to-video, Wan 2.2 text-to-video, and HunyuanVideo text-to-video, HVA achieves the strongest fidelity
+              to full attention among the evaluated sparse methods. On HunyuanVideo, HVA reaches 33.97 PSNR and 0.046 LPIPS, compared
+              with 32.66 PSNR and 0.056 LPIPS for SVG2. HVA-Flash prioritizes inference speed while retaining competitive fidelity,
+              reaching up to 1.86&times; speedup on Wan 2.2 and 2.23&times; on HunyuanVideo.
+            </p>
+          </div>
+        </article>
+
+        <article class="result-block">
+          <h3 class="title is-4">Efficiency Analysis</h3>
+          <figure class="result-figure">
+            <img src="./static/images/figure5.png"
+                 width="1650"
+                 height="655"
+                 alt="Efficiency analysis showing end-to-end latency breakdown, clustering error versus latency, and theoretical versus CTA density before and after cluster merging.">
+          </figure>
+          <div class="content has-text-justified result-description">
+            <p>
+              The latency breakdown shows that hybrid clustering with 3D local-window clustering reduces clustering time from 83 s for
+              SVG2 to 26 s. With 10 iterations, our clustering reaches an error comparable to 50 iterations of <i>k</i>-means while
+              reducing clustering latency by 6.29&times;. Hardware-aware cluster merging also raises theoretical density from 39.70% to
+              42.24% within idle tile capacity while lowering actual CTA density from 50.42% to 46.88%, a 7.02% relative reduction.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="bibtex" class="section">
+      <div class="container is-max-desktop content">
+        <h2 class="title">BibTeX</h2>
+        <pre><code>@misc{lee2026hypervattention,
+  title         = {HyperVAttention: Efficient Sparse Attention with Spatio-Temporal Clustering for Video Diffusion},
+  author        = {Dongyeun Lee and Amir Zandieh and Vahab Mirrokni and Junmo Kim and Insu Han},
+  year          = {2026},
+  eprint        = {2607.03012},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2607.03012}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://arxiv.org/pdf/2607.03012"
+           target="_blank" rel="noopener noreferrer" aria-label="Paper PDF">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/LeeDongYeun/HyperVAttention"
+           target="_blank" rel="noopener noreferrer" aria-label="Code repository">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a
+              <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                Creative Commons Attribution-ShareAlike 4.0 International License
+              </a>.
+            </p>
+            <p>
+              Website template adapted from
+              <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
